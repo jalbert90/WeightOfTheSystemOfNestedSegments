@@ -1,59 +1,30 @@
 #include <iostream>
 #include <map>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
 void solve() {
-	int n, m, totWeight = 0;
+	int n, m, totWeight = 0, nEx;
 	cin >> n >> m;
+	nEx = m - 2 * n;
 
-	map<int, int> mx;
-	map<int, int> mw;
-	map<int, int> mxw;
-	map<int, int> mxi;
+	map<int, int> mix, mxw;
+	pair<int, int>* wx = new pair<int, int>[m];
 
 	for (int i = 0; i < m; i++) {
 		int x, w;
 		cin >> x >> w;
-		mx.insert(pair<int, int>(i + 1, x));
-		mw.insert(pair<int, int>(i + 1, w));
+		mix.insert(pair<int, int>(i + 1, x));
 		mxw.insert(pair<int, int>(x, w));
-		mxi.insert(pair<int, int>(x, i + 1));
-		totWeight += w;
+		wx[i].first = w;
+		wx[i].second = x;
 	}
 
-	int nEx = m - 2 * n;
+	sort(wx, wx + m, greater<int>());
 
-	map<int, int>::iterator itx;
-	map<int, int>::iterator itw;
-	map<int, int>::iterator itxw;
-	map<int, int>::iterator itxi;
-
-	for (int i = 0; i < nEx; i++) {
-		itw = max_element(mw.begin(), mw.end(), [](const auto& x, const auto& y) {return x.second < y.second;});
-		int maxWeightIndex = itw->first;
-		int maxWeightX = mx[maxWeightIndex];
-		totWeight -= itw->second;
-		mx.erase(maxWeightIndex);
-		mw.erase(maxWeightIndex);
-		mxw.erase(maxWeightX);
-		mxi.erase(maxWeightX);
-	}
-
-	cout << totWeight << endl;
-
-	itxw = mxw.begin();
-	map<int, int>::reverse_iterator ritxw = mxw.rbegin();
-
-	for (int i = 0; i < n; i++) {
-		int xFirst, xLast;
-		xFirst = itxw->first;
-		xLast = ritxw->first;
-		cout << mxi[xFirst] << " " << mxi[xLast] << endl;
-		xFirst = itxw++->first;
-		xLast = ritxw++->first;
-	}
+	delete[] wx;
 }
 
 int main() {
