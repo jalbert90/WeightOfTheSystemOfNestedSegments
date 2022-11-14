@@ -10,14 +10,13 @@ void solve() {
 	cin >> n >> m;
 	nEx = m - 2 * n;
 
-	map<int, int> mix, mxw, mxi;
+	map<int, int> mix, mxi;
 	vector<pair<int, int>> wx;
 
 	for (int i = 0; i < m; i++) {
 		int x, w;
 		cin >> x >> w;
 		mix.insert(pair<int, int>(i + 1, x));
-		mxw.insert(pair<int, int>(x, w));
 		mxi.insert(pair<int, int>(x, i + 1));
 		wx.push_back(make_pair(w, x));
 		totalWeight += w;
