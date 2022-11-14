@@ -6,25 +6,40 @@
 using namespace std;
 
 void solve() {
-	int n, m, totWeight = 0, nEx;
+	int n, m, totalWeight = 0, nEx;
 	cin >> n >> m;
 	nEx = m - 2 * n;
 
-	map<int, int> mix, mxw;
-	pair<int, int>* wx = new pair<int, int>[m];
+	map<int, int> mix, mxw, mxi;
+	vector<pair<int, int>> wx;
 
 	for (int i = 0; i < m; i++) {
 		int x, w;
 		cin >> x >> w;
 		mix.insert(pair<int, int>(i + 1, x));
 		mxw.insert(pair<int, int>(x, w));
-		wx[i].first = w;
-		wx[i].second = x;
+		mxi.insert(pair<int, int>(x, i + 1));
+		wx.push_back(make_pair(w, x));
+		totalWeight += w;
 	}
 
-	sort(wx, wx + m, greater<int>());
+	sort(wx.rbegin(), wx.rend());
 
-	delete[] wx;
+	for (int i = 0; i < nEx; i++) {
+		int maxWeightX = wx[i].second;
+		int maxWeightIndex = mxi[maxWeightX];
+		mxi.erase(maxWeightX);
+		totalWeight -= wx[i].first;
+	}
+
+	cout << totalWeight << endl;
+
+	map<int, int>::iterator mxiItr = mxi.begin();
+	map<int, int>::reverse_iterator mxiRItr = mxi.rbegin();
+
+	for (int i = 0; i < n; i++) {
+		cout << mxiItr++->second << " " << mxiRItr++->second << endl;
+	}
 }
 
 int main() {
